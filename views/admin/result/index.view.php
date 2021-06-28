@@ -38,16 +38,26 @@
                                                 <th>#</th>
                                                 <th>Name</th>
                                                 <th>Result</th>
+                                                <th>Subject ID</th>
                                                 <th>Date</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php if ($results->num_rows > 0) : ?>
                                                 <?php while ($data = mysqli_fetch_array($results)) : ?>
-                                                    <tr>
+                                                    <tr
+                                                    <?php if($data["percentage"] >= 86):?>
+                                                    style="background:#3dcfd3;font-weight:bold" 
+                                                    <?php elseif($data["percentage"] >= 60):?>
+                                                    style="background:rgb(28, 173, 28);font-weight:bold"
+                                                    <?php else:?>
+                                                    style="background:rgb(202, 52, 41);font-weight:bold"
+                                                    <?php endif;?>
+                                                    >
                                                         <td><?= ++$key; ?></td>
                                                         <td><?= $data["name"]; ?></td>
-                                                        <td><?= $data["result"]; ?></td>
+                                                        <td><?= $data["percentage"]; ?>%</td>
+                                                        <td><?= $data["subject_id"];?></td>
                                                         <td><?= $data["created_at"]; ?></td>
                                                         
                                                     </tr>

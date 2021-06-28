@@ -30,8 +30,9 @@ $router->define([
     'store-quiz'=>'app/controllers/quiz/store.php',
 
     'admin-result'=>'app/controllers/result/index.php',
-    'result'=>'app/controllers/result/result.php',
+    'result'=>'app/controllers/result/index.php',
     'users'=>'app/controllers/users/index.php',
+    'resultview'=>'app/controllers/result/result.php',
 ]);
 
 

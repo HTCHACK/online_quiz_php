@@ -1,9 +1,15 @@
 <?php
-$mysqli = new mysqli('127.0.0.1', 'root', '', 'myDB') or die(mysqli_error($mysqli));
-$id = $_GET['id'];
 
-$query = $mysqli->query("SELECT * FROM subjects WHERE id='$id'") or die($mysqli->error);
-$quizs = $mysqli->query("SELECT * FROM quizs WHERE subject_id='$id'") or die($mysqli->error);
+$mysqli = mysqli_connect("127.0.0.1", "root", "", "myDB");
+$id = $_GET['id'];
+$query = $mysqli->query("SELECT * FROM subjects WHERE id='$id'");
+$sql = "SELECT * FROM quizs WHERE subject_id='$id'";
+$result = $mysqli->query($sql);
+
+
+
+
+//$quizs = $mysqli->query("SELECT * FROM quizs WHERE subject_id='$id'");
 //$query=mysqli_query($db,"select * from subjects where id='$id'");
 $row = mysqli_fetch_array($query);
 ?>
@@ -50,44 +56,48 @@ $row = mysqli_fetch_array($query);
         <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-8">
-                <form method="POST" action="/result" style="border:2px solid #3dcfd3;padding:1rem;border-radius:10px">
+                <form method="post" action="/users" style="border:2px solid #3dcfd3;padding:1rem;border-radius:10px">
                     <div class="form-group">
                         <input type="text" class="form-control" name="name" placeholder="Name.." required>
+                        <input type="hidden" name="subject_id" value="<?= $id;?>">
                     </div>
                     <div class="form-group">
-                        <?php foreach ($quizs as $quiz) : ?>
-                        <input type="hidden" name="quiz_id" value="<?php echo $quiz['id']; ?>">
-                            <label><?= $quiz['question'] ?></label>
+
+
+                        <?php while ($data = $result->fetch_assoc()) : ?>
+                            <input type="hidden" name="<?= $data['id']; ?>" value="<?= $data['id'] ?>">
+                            <label><?= $data['question'] ?></label>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="option_one" id="inlineRadio4" value="<?= $quiz['option_one']; ?>">
-                                <label class="form-check-label" for="inlineRadio4   " >
-                                    <?= $quiz['option_one']; ?>
+                                <input class="form-check-input" type="radio" name="<?= $data['id'] ?>" id="inlineRadio4" value="1">
+                                <label class="form-check-label" for="inlineRadio4   ">
+                                    <?= $data['option_one'] ?>
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="option_two" id="inlineRadio4" value="<?= $quiz['option_two']; ?>">
+                                <input class="form-check-input" type="radio" name="<?= $data['id'] ?>" id="inlineRadio4" value="2">
                                 <label class="form-check-label" for="inlineRadio4">
-                                    <?= $quiz['option_two']; ?>
+                                    <?= $data['option_two'] ?>
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="option_three" id="inlineRadio4" value="<?= $quiz['option_three']; ?>">
+                                <input class="form-check-input" type="radio" name="<?= $data['id'] ?>" id="inlineRadio4" value="3">
                                 <label class="form-check-label" for="inlineRadio4">
-                                    <?= $quiz['option_three']; ?>
+                                    <?= $data['option_three'] ?>
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="option_four" id="inlineRadio4" value="<?= $quiz['option_four']; ?>">
+                                <input class="form-check-input" type="radio" name="<?= $data['id'] ?>" id="inlineRadio4" value="4">
                                 <label class="form-check-label" for="inlineRadio4">
-                                    <?= $quiz['option_four']; ?>
-                                </label>
+                                    <?= $data['option_four'] ?>
+                                    </labelb>
                             </div>
                             <br>
-                        <?php endforeach; ?>
-                       
+                        <?php endwhile;?>
+
+
                     </div>
                     <div class="form-group">
-                            <button type="submit" class="btn btn-info" name="submit">Submit</button>
+                        <button type="submit" class="btn btn-info" name="subjects">Submit</button>
                     </div>
                 </form>
             </div>
